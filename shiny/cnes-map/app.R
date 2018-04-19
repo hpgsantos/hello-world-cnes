@@ -42,7 +42,7 @@ ui <- bootstrapPage(
 					'Compilado ', tags$em('CNES BRASIL: DATA SCIENCE fot Science'), ' Deivison Rayner, Henrique Pires, Luis Santos.'
 				)
 			)
-		), ##tbPanel
+		),
 			   
 		tabPanel("Tabela",
 			div(class="outer",
@@ -58,7 +58,7 @@ ui <- bootstrapPage(
 					'Compilado ', tags$em('CNES BRASIL: DATA SCIENCE fot Science'), ' Deivison Rayner, Henrique Pires'
 				)
 			)
-		) ##tbPanel			   
+		)		   
 			   
 	)
 )
@@ -68,23 +68,14 @@ server <- function(input, output, session) {
 	
 	filteredData <- reactive( {
 
-	  cnes.estabelecimentos <- read.table(file = "/home/henrique/var/www/unb/hello-world-cnes/dados/cnes_estabelecimentos.csv", sep = ",", quote = "\"", dec = ",",stringsAsFactors = FALSE ,header = TRUE);
+	  cnes.estabelecimentos <- read.table(file = "~/var/www/unb/hello-world-cnes/dados/cnes_estabelecimentos.csv", sep = ",", quote = "\"", dec = ",",stringsAsFactors = FALSE ,header = TRUE);
 		
-		allcnes  <- cnes.estabelecimentos  %>% 
+		temp  <- cnes.estabelecimentos  %>% 
 		group_by(CNES) %>% 
 		  summarize(qtd_cnes =  n(), num_ano = max(as.numeric(X_ANO)) + 2000, sgl_uf=max(X_UF), qtd_leito = (sum(QTLEITP1) + sum(QTLEITP2) + sum(QTLEITP3)), lat = max(as.numeric(lat)), long = max(as.numeric(long)))
 
-		allcnes <- as.data.frame(allcnes)
-		allcnes <- head(allcnes,50)
-		
-		temp <- cnes.estabelecimentos %>% 
-		group_by(CNES) %>% 
-		  summarize(qtd_cnes =  n(), num_ano = max(as.numeric(X_ANO)) + 2000, sgl_uf=max(X_UF), qtd_leito = (sum(QTLEITP1) + sum(QTLEITP2) + sum(QTLEITP3)), lat = max(as.numeric(lat)), long = max(as.numeric(long)))
-		
 		temp <- as.data.frame(temp)		 
-
 		temp <- temp[temp$qtd_leito >= input$range[1] & temp$qtd_leito <= input$range[2],]
-
 		temp 
 	})
 	
@@ -118,7 +109,7 @@ server <- function(input, output, session) {
 
     leafletProxy("map", data = filteredData()) %>%
       clearShapes() %>%
-	   addCircles(lng = ~long, lat = ~lat, weight = 4, radius = ~sqrt(qtd_leito) * 10) %>%
+	   addCircles(lng = ~long, lat = ~lat, weight = 4, radius = ~sqrt(qtd_leito) * 40) %>%
 	 # setView(-41.280857, -11.409874, zoom = 4) %>% 
 	  	fitBounds(~min(long), ~min(lat), ~max(long), ~max(lat))
   })
