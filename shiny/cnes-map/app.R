@@ -82,7 +82,7 @@ server <- function(input, output, session) {
 	output$downloadData <- downloadHandler(
 		filename = function() {
 			ctm 	<- as.numeric(Sys.time())*1000
-			fnme 	<- "cnae_filtered"
+			fnme 	<- "~/var/www/unb/hello-world-cnes/dados/cnes_filtered"
 			paste(fnme,ctm ,".csv", sep = "")
 		},
 		content = function(file) {
