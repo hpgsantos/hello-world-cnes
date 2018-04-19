@@ -23,10 +23,7 @@ if(!require(ggplot2)) install.packages("ggplot2")
 
 
 censo.setores <- read.table(file = file.path("dados", "censo_setores.csv") , sep = ",", quote = "\"", dec = ",", header = TRUE);
-
-
 cnes.estabelecimentos <- read.table(file = file.path("dados", "cnes_estabelecimentos.csv"), sep = ",", quote = "\"", dec = ".", header = TRUE);
-
 
 str(cnes.estabelecimentos)
 colnames(cnes.estabelecimentos)
